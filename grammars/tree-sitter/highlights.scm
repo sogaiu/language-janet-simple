@@ -1,84 +1,86 @@
 ;; literals
-(kwd_lit) @entity.tag
+(kwd_lit) @constant.keyword.janet
 
-(str_lit) @string.quoted.double
+(str_lit) @string.quoted.double.janet
 
-(long_str_lit) @string.quoted.other
+(long_str_lit) @string.quoted.other.janet
 
-(buf_lit) @string.quoted.double
+(buf_lit) @string.quoted.double.janet
 
-(long_buf_lit) @string.quoted.other
+(long_buf_lit) @string.quoted.other.janet
 
-(num_lit) @constant.numeric
+(num_lit) @constant.numeric.janet
 
-(bool_lit) @constant.language
+(bool_lit) @constant.language.boolean.janet
 
-(nil_lit) @constant.language
+(nil_lit) @constant.language.nil.janet
 
-(comment) @comment.line
+(comment) @comment.line.hash.janet
 
-[
- "{"
- "@{"
- "["
- "@["
- "("
- "@("
-] @punctuation.section.expression.begin
+"{" @punctuation.section.dictionary.struct.begin.janet
 
-[
- "}"
- "]"
- ")"
-] @punctuation.section.expression.end
+"@{" @punctuation.section.dictionary.table.begin.janet
+
+"[" @punctuation.section.indexed.tuple.square.begin.janet
+
+"@[" @punctuation.section.indexed.array.begin.janet
+
+"(" @punctuation.section.expression.tuple.begin.janet
+
+"@(" @punctuation.section.indexed.array.round.begin.janet
+
+"}" @punctuation.section.dictionary.end.janet
+
+"]" @punctuation.section.indexed.square.end.janet
+
+")" @punctuation.section.expression.tuple.end.janet
 
 ;; symbols
 
-((sym_lit) @constant.language
- (#match? @constant.language "^&.*"))
+((sym_lit) @constant.language.janet
+ (#match? @constant.language.janet "^&.*"))
 
 ;; general symbol highlighting
-(sym_lit) @meta.symbol
+(sym_lit) @meta.symbol.janet
 
 ;; callables
 (par_tup_lit
   .
-  (sym_lit) @entity.name.function)
+  (sym_lit) @entity.name.function.janet)
 
-(short_fn_lit
-  .
-  (sym_lit) @entity.name.function)
+;;(short_fn_lit
+;;  .
+;;  (sym_lit) @entity.name.function.janet)
 
 ;; quoted symbols
-(quote_lit
-  (sym_lit) @meta.quoted)
+;;(quote_lit
+;;  (sym_lit) @string.meta.quoted.janet)
 
-(qq_lit
-  (sym_lit) @meta.syntax-quoted)
+;;(qq_lit
+;;  (sym_lit) @meta.syntax-quoted.janet)
 
 ;; dynamic variables
-((sym_lit) @variable.language
-  (#match? @variable.language "^[*].+[*]$"))
+((sym_lit) @keyword.dynamic.variable.janet
+  (#match? @keyword.dynamic.variable.janet "^[*].+[*]$"))
 
 ;; comment form
-((sym_lit) @comment
-  (#eq? @comment "comment"))
+((sym_lit) @comment.macro.janet
+  (#eq? @comment.macro.janet "comment"))
 
-;; special forms and builtin macros
-;;
-;; # special forms were manually added at the beginning
-;;
-;; # for macros
+;; special forms were manually added
+((sym_lit) @keyword.special-form.janet
+  (#any-of? @keyword.special-form.janet
+
+    "break" "def" "do" "fn" "if" "quasiquote" "quote" "set" "splice" "unquote" "upscope" "var"
+    "while"))
+
+;; macros
 ;; (each name (all-bindings)
 ;;   (when-let [info (dyn (symbol name))]
 ;;     (when (info :macro)
 ;;       (print name))))
-((sym_lit) @keyword.other
-  (#any-of? @keyword.other
-    ;; special forms
-    "break" "def" "do" "fn" "if" "quasiquote" "quote" "set" "splice" "unquote" "upscope" "var"
-    "while"
-    ;; macros
+((sym_lit) @keyword.macro.janet
+  (#any-of? @keyword.macro.janet
     "%=" "*=" "++" "+=" "--" "-=" "->" "->>" "-?>" "-?>>" "/=" "and" "as->" "as-macro" "as?->"
     "assert" "case" "catseq" "chr" "comment" "compif" "comptime" "compwhen" "cond" "coro" "def-"
     "default" "defdyn" "defer" "defmacro" "defmacro-" "defn" "defn-" "delay" "doc" "each" "eachk"
@@ -99,8 +101,8 @@
 ;;                (or (function? (info :value))
 ;;                    (cfunction? (info :value))))
 ;;       (print name))))
-((sym_lit) @entity.name.function
-  (#any-of? @entity.name.function
+((sym_lit) @keyword.function.janet
+  (#any-of? @keyword.function.janet
     "%" "*" "+" "-" "/" "<" "<=" "=" ">" ">="
     ;; debugging -- start janet with -d and use (debug) to see these
     ".break" ".breakall" ".bytecode" ".clear" ".clearall" ".disasm" ".fiber" ".fn" ".frame"
