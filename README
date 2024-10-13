@@ -1,0 +1,5 @@
+# assuming an installation of pulsar 1.121.0
+cd ~/src
+git clone https://github.com/sogaiu/language-janet-simple
+cd ~/.pulsar/packages
+ln -s ~/src/language-janet-simple language-janet-simple
