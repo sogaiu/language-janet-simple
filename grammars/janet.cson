@@ -15,4 +15,5 @@ comments:
 treeSitter:
   grammar: 'tree-sitter/grammar.wasm'
   highlightsQuery: 'tree-sitter/highlights.scm'
+  foldsQuery: 'tree-sitter/folds.scm'
 
